@@ -35,6 +35,8 @@ class Apriori:
         """
             Will return the transactions in an hashmap with keys
             as items and values as the set of transaction numbers.
+
+            Space Complexity: O(m*n) (with a small constant multiplier)
         """
         hmp = dict();
         for transaction_number in range(len(transactions)):
@@ -85,22 +87,21 @@ class Apriori:
         for i in range(end-start + 1):
             self.__candidate_set[start + i] = temp[i]
 
-
     def generate_frequent_itemsets(self):
         '''
             Perform binary search to take the frequent itemsets of length=1,
             which are sorted at the front of the items array.
 
-            Time Complexity: O(nlog(n) + log(n)) = O(nlog(n))
+            Time Complexity: O(log(n) + log(n)) = O(log(n))
         '''
         self.sort_items();
 
-        start = 0; end = len(self.__candidate_set);
+        start = 0; end = len(self.__candidate_set)-1;
 
         while(start<=end):
             """ Find the upper bound of the supports """
             mid = start + (end - start)//2
-
+            print(f"{start}\t{mid}\t{end}")
             if (self.get_support(self.__candidate_set[mid]) >= self.minsup):
                 start = mid + 1;
             else: end = mid - 1;
@@ -111,9 +112,9 @@ class Apriori:
         """
 
         self.frequent_items += self.__candidate_set[:start]
-        self.length_of_frequent_items.append(start)
-        print(self.minsup)
+        self.length_of_frequent_items.append(self.length_of_frequent_items[-1] + start)
 
+        print(self.length_of_frequent_items)
         return start
 
     def get_support(self,itemset=set()):
@@ -131,11 +132,19 @@ class Apriori:
 
 
     def generate_candidates(self,klength=2):
+        '''
+            This method is used to generate the next set of candidate items
+
+            Time Complexity: O(n)
+        '''
         self.__candidate_set = list()
         for i in range(self.length_of_frequent_items[-2],self.length_of_frequent_items[-1]):
             for j in range(i,self.length_of_frequent_items[-1]):
                 new_itemset = self.frequent_items[i] | self.frequent_items[j]
                 if (len(new_itemset)  == klength): self.__candidate_set.append(new_itemset)
+
+        print("Length of the candidate itemset",len(self.__candidate_set))
+        for x in range(5): print(self.__candidate_set[x])
 
 
 
@@ -168,8 +177,12 @@ def main(dataset=None,relminsup=1):
 
     k = 2
     while apriori.length_of_frequent_items[-1] - apriori.length_of_frequent_items[-2] > 0:
-        apriori.generate_candidates(2)
-        break
+        print(f"k={k}----------------------")
+        apriori.generate_candidates(k)
+        apriori.generate_frequent_itemsets()
+        k += 1
+        print(apriori.length_of_frequent_items[-1] - apriori.length_of_frequent_items[-2])
+        print("_______________________")
 
 
 
