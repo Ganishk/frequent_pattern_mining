@@ -28,8 +28,7 @@ class Apriori:
         self.minsup = len(values)*relative_minimum_support
         self.ds = Apriori.generate_dataset_efficiently(values)
         self.items = list(self.ds.keys())
-        self.__candidate_set = self.items # This stores the latest candidate itemsets
-
+        self.__candidate_set = list(map(lambda item: set((item,)), self.items)) # This stores the latest candidate itemsets
 
     @staticmethod
     def generate_dataset_efficiently(transactions):
@@ -50,9 +49,25 @@ class Apriori:
             list of all items based on it's support.
 
 
-            Time Complexity: O(nlog(n))
+            Time Complexity: O(log2(n))
+            Space Complexity: O(n)
         '''
-        self.__candidate_set.sort(key=(lambda item: len(self.ds[item])),reverse=True)
+        self.__candidate_set.sort(key=(self.get_support),reverse=True)
+        # Perform merge sort
+        
+        print(self.__candidate_set[:10])
+
+    @staticmethod
+    def merge_sort_helper(arr,start,end):
+        mid = start + (end-start)//2
+    
+    # @staticmethod
+    # def merge_sort_merger(arr,start,end):
+    #     mid = start + (end-start)//2
+    #     left = start; right = mid + 1
+    #     temp = []
+    #     while left <= mid and right <= end:
+    #         if 
 
     def base_itemsets(self):
         '''
@@ -63,13 +78,13 @@ class Apriori:
         '''
         self.sort_items();
 
-        start = 0; end = len(self.items);
+        start = 0; end = len(self.__candidate_set);
 
         while(start<=end):
             """ Find the upper bound of the supports """
             mid = start + (end - start)//2
 
-            if (len(self.ds[self.items[mid]]) >= self.minsup):
+            if (self.get_support(self.__candidate_set[mid]) >= self.minsup):
                 start = mid + 1;
             else: end = mid - 1;
 
@@ -78,15 +93,32 @@ class Apriori:
             whereas items from index `start`(inclusive) to the end of the list are not frequent.
         """
 
-        self.frequent_items += self.items[0:start]
+        self.frequent_items += self.__candidate_set[0:start]
         self.length_of_frequent_items.append(start)
+        print(self.minsup)
 
         return start
 
+    def get_support(self,itemset=set()):
+        """
+            This functions is used to get the support of the itemset from dataset. The input
+            should be a non-empty itemset
+        """
+        assert len(itemset) > 0
+        temp = set()
+        for x in itemset:
+            # Since, set is a mutable type, don't pop it out to take the first value, but frozenset can be used
+            if len(temp)==0: temp = self.ds[x]
+            temp &= self.ds[x]
+        return len(temp)
+
+
     def generate_candidates(self,klength=2):
+        self.__candidate_set = list()
         for i in range(self.length_of_frequent_items[-2],self.length_of_frequent_items[-1]):
             for j in range(i,self.length_of_frequent_items[-1]):
-                self.__candidate_set
+                new_itemset = self.frequent_items[i] | self.frequent_items[j]
+                if (len(new_itemset)  == klength): self.__candidate_set.append(new_itemset)
 
 
 
@@ -115,7 +147,7 @@ def main(dataset=None,relminsup=1):
         '''
         file.write(str(end_index)+"\n")
         for i in range(end_index):
-            file.write(f"{apriori.items[i]}: {len(apriori.ds[apriori.items[i]])}\n")
+            file.write(f"{','.join(apriori.frequent_items[i])}: {apriori.get_support(apriori.frequent_items[i])}\n")
 
     k = 2
     while apriori.length_of_frequent_items[-1] - apriori.length_of_frequent_items[-2] > 0:
