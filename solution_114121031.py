@@ -14,6 +14,7 @@ class Apriori:
 
     frequent_items = [] #This will store all the k-length frequent itemsets
     length_of_frequent_items = [0]
+
     #value at index `i` - `i-1` gives the total number of i-length frequent itemsets
 
 
@@ -101,7 +102,6 @@ class Apriori:
         while(start<=end):
             """ Find the upper bound of the supports """
             mid = start + (end - start)//2
-            print(f"{start}\t{mid}\t{end}")
             if (self.get_support(self.__candidate_set[mid]) >= self.minsup):
                 start = mid + 1;
             else: end = mid - 1;
@@ -114,38 +114,50 @@ class Apriori:
         self.frequent_items += self.__candidate_set[:start]
         self.length_of_frequent_items.append(self.length_of_frequent_items[-1] + start)
 
-        print(self.length_of_frequent_items)
         return start
 
     def get_support(self,itemset=set()):
         """
             This functions is used to get the support of the itemset from dataset. The input
             should be a non-empty itemset
+
+            Time Complexity: O(m*min(ni)), where m is no. of attributes and ni is the no. of
+            transactions of ith attribute
         """
         assert len(itemset) > 0
         temp = set()
         for x in itemset:
             # Since, set is a mutable type, don't pop it out to take the first value, but frozenset can be used
-            if len(temp)==0: temp = self.ds[x]
-            temp &= self.ds[x]
+            if len(temp) == 0: temp = set(self.ds[x])
+            temp &= (self.ds[x])
+            if len(temp) == 0: break
         return len(temp)
-
 
     def generate_candidates(self,klength=2):
         '''
             This method is used to generate the next set of candidate items
 
-            Time Complexity: O(n)
+            Time Complexity: O(n*n)
         '''
         self.__candidate_set = list()
+
+        # Merge phase is done below
         for i in range(self.length_of_frequent_items[-2],self.length_of_frequent_items[-1]):
             for j in range(i,self.length_of_frequent_items[-1]):
                 new_itemset = self.frequent_items[i] | self.frequent_items[j]
-                if (len(new_itemset)  == klength): self.__candidate_set.append(new_itemset)
+                # Pruning will be done if the itemset is of length k
+                if (len(new_itemset)  == klength and new_itemset not in self.__candidate_set and self.get_support(new_itemset)>=self.minsup): self.__candidate_set.append(new_itemset)
+    
+    def write_to_file(self,filename,start=0,end=None):
+        if end==None: end = self.length_of_frequent_items[-1]
 
-        print("Length of the candidate itemset",len(self.__candidate_set))
-        for x in range(5): print(self.__candidate_set[x])
+        frequent_patterns_to_write = self.frequent_items[start:end]
+        frequent_patterns_to_write.sort(key=self.get_support,reverse=True)
 
+        with open(filename,'w') as file:
+            file.write(str(end-start)+'\n')
+            for i in range(end):
+                file.write(f"{','.join(frequent_patterns_to_write[i])}: {self.get_support(frequent_patterns_to_write[i])}\n")
 
 
 def main(dataset=None,relminsup=1):
@@ -167,22 +179,26 @@ def main(dataset=None,relminsup=1):
     end_index = apriori.generate_frequent_itemsets()
 
 ################################### TASK 1a ####################################
-    with open('patterns_1.txt','wt') as file:
-        '''
-            Write the 1 length frequent itemsets to the patterns_1.txt file'
-        '''
-        file.write(str(end_index)+"\n")
-        for i in range(end_index):
-            file.write(f"{','.join(apriori.frequent_items[i])}: {apriori.get_support(apriori.frequent_items[i])}\n")
+    apriori.write_to_file('patterns_1.txt') # Write the 1 length frequent itemsets to the patterns_1.txt file
 
     k = 2
+
     while apriori.length_of_frequent_items[-1] - apriori.length_of_frequent_items[-2] > 0:
-        print(f"k={k}----------------------")
+        print(f"Generating candidate itemsets of length '{k}'")
         apriori.generate_candidates(k)
+        print(f"Finding frequent patterns of length '{k}'")
         apriori.generate_frequent_itemsets()
+
+        start_index = apriori.length_of_frequent_items[-2]
+        end_index = apriori.length_of_frequent_items[-1]
+        # apriori.write_to_file(f'items_{k}')
+
         k += 1
-        print(apriori.length_of_frequent_items[-1] - apriori.length_of_frequent_items[-2])
-        print("_______________________")
+    else:
+        print("\nLargest found length of itemset:",k-2)
+
+################################### TASK 1b ####################################
+    apriori.write_to_file('patterns_all.txt')
 
 
 
