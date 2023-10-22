@@ -32,8 +32,8 @@ Home & Garden: 1586
 Pets: 1497
 Fitness & Instruction: 1442
 Hotels: 1431
-Real Estate: 1424
 Grocery: 1424
+Real Estate: 1424
 Breakfast & Brunch: 1369
 Dentists: 1195
 Specialty Food: 1150

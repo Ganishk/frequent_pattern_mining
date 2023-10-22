@@ -52,24 +52,41 @@ class Apriori:
             Time Complexity: O(log2(n))
             Space Complexity: O(n)
         '''
-        self.__candidate_set.sort(key=(self.get_support),reverse=True)
-        # Perform merge sort
-        
-        print(self.__candidate_set[:10])
+        # Perform merge sort operation
+        self.merge_sort(0, len(self.__candidate_set)-1)
 
-    @staticmethod
-    def merge_sort_helper(arr,start,end):
+    def merge_sort(self,start,end):
+        if (start>=end): return 
         mid = start + (end-start)//2
-    
-    # @staticmethod
-    # def merge_sort_merger(arr,start,end):
-    #     mid = start + (end-start)//2
-    #     left = start; right = mid + 1
-    #     temp = []
-    #     while left <= mid and right <= end:
-    #         if 
+        self.merge_sort(start,mid)
+        self.merge_sort(mid+1,end)
+        self.merge_sort_merger(start,mid,end)
 
-    def base_itemsets(self):
+    def merge_sort_merger(self,start,mid,end):
+        left = start; right = mid + 1
+        temp = []
+        while left <= mid and right <= end:
+            # Sort the array in descending order
+            if self.get_support(self.__candidate_set[left]) > self.get_support(self.__candidate_set[right]):
+                temp.append(self.__candidate_set[left])
+                left += 1
+            else:
+                temp.append(self.__candidate_set[right])
+                right += 1
+        
+        while left<=mid:
+            temp.append(self.__candidate_set[left])
+            left += 1
+        
+        while right<=end:
+            temp.append(self.__candidate_set[right])
+            right += 1
+        
+        for i in range(end-start + 1):
+            self.__candidate_set[start + i] = temp[i]
+
+
+    def generate_frequent_itemsets(self):
         '''
             Perform binary search to take the frequent itemsets of length=1,
             which are sorted at the front of the items array.
@@ -93,7 +110,7 @@ class Apriori:
             whereas items from index `start`(inclusive) to the end of the list are not frequent.
         """
 
-        self.frequent_items += self.__candidate_set[0:start]
+        self.frequent_items += self.__candidate_set[:start]
         self.length_of_frequent_items.append(start)
         print(self.minsup)
 
@@ -138,7 +155,7 @@ def main(dataset=None,relminsup=1):
 
     apriori = Apriori(values,rel_minsup)
 
-    end_index = apriori.base_itemsets()
+    end_index = apriori.generate_frequent_itemsets()
 
 ################################### TASK 1a ####################################
     with open('patterns_1.txt','wt') as file:
