@@ -128,7 +128,7 @@ class Apriori:
         temp = set()
         for x in itemset:
             # Since, set is a mutable type, don't pop it out to take the first value, but frozenset can be used
-            if len(temp) == 0: temp = set(self.ds[x])
+            if len(temp) == 0: temp = set(self.ds[x]) # do shallow copy to avoid mutation
             temp &= (self.ds[x])
             if len(temp) == 0: break
         return len(temp)
@@ -148,10 +148,10 @@ class Apriori:
                 # Pruning will be done if the itemset is of length k
                 if (len(new_itemset)  == klength and new_itemset not in self.__candidate_set and self.get_support(new_itemset)>=self.minsup): self.__candidate_set.append(new_itemset)
     
-    def write_to_file(self,filename,start=0,end=None):
-        if end==None: end = self.length_of_frequent_items[-1]
+    def write_to_file(self,filename,start=0,end=None,*,closed=False):
+        if end==None: end = len(self.__closed_patterns) if closed else self.length_of_frequent_items[-1]
 
-        frequent_patterns_to_write = self.frequent_items[start:end]
+        frequent_patterns_to_write = self.__closed_patterns if closed else self.frequent_items[start:end]
         frequent_patterns_to_write.sort(key=self.get_support,reverse=True)
 
         with open(filename,'w') as file:
@@ -159,6 +159,24 @@ class Apriori:
             for i in range(end):
                 file.write(f"{','.join(frequent_patterns_to_write[i])}: {self.get_support(frequent_patterns_to_write[i])}\n")
 
+    def filter_closed_frequent_itemsets(self):
+        self.__closed_patterns = []
+        for klength_index in range(len(self.length_of_frequent_items)-2):
+            for pattern_number in range(self.length_of_frequent_items[klength_index],self.length_of_frequent_items[klength_index+1]):
+                support_of_current_pattern = self.get_support(self.frequent_items[pattern_number])
+                valid_closed_frequent_itemset = False
+
+                for higher_index in range(self.length_of_frequent_items[klength_index+1],self.length_of_frequent_items[klength_index+2]):
+                    if self.frequent_items[higher_index].issuperset(self.frequent_items[pattern_number]):
+                        if self.get_support(self.frequent_items[higher_index]) != support_of_current_pattern:
+                            valid_closed_frequent_itemset = True
+                        else:
+                            valid_closed_frequent_itemset = False
+                            break
+                    else: valid_closed_frequent_itemset = True
+                    
+                
+                if valid_closed_frequent_itemset: self.__closed_patterns.append(self.frequent_items[pattern_number])
 
 def main(dataset=None,relminsup=1):
     if dataset==None: return
@@ -200,11 +218,15 @@ def main(dataset=None,relminsup=1):
 ################################### TASK 1b ####################################
     apriori.write_to_file('patterns_all.txt')
 
+################################### TASK 1b ####################################
+    apriori.filter_closed_frequent_itemsets()
+    apriori.write_to_file("patterns_close.txt",closed=True)
+    print("Closed itemsets are filtered successfully")
 
 
 
 if __name__=="__main__":
     """Entry point, if this file is run as a script"""
-    filename = sys.argv[1]
+    filename = 'categories.txt' if len(sys.argv) else sys.argv[1]
     rel_minsup = 0.01 if len(sys.argv) < 3 else sys.argv[2]
     main(filename,rel_minsup)
