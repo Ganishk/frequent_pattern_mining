@@ -236,6 +236,6 @@ def main(dataset=None,relminsup=1):
 
 if __name__=="__main__":
     """Entry point, if this file is run as a script"""
-    filename = 'categories.txt' if len(sys.argv) else sys.argv[1]
+    filename = 'categories.txt' if len(sys.argv) < 2 else sys.argv[1]
     rel_minsup = 0.01 if len(sys.argv) < 3 else sys.argv[2]
     main(filename,rel_minsup)
