@@ -1,4 +1,4 @@
-48
+55
 Restaurants: 25071
 Shopping: 11233
 Food: 9250
@@ -12,38 +12,45 @@ Local Services: 3468
 Active Life: 3103
 Fashion,Shopping: 3078
 Event Planning & Services: 2975
-Restaurants,Fast Food: 2851
-Restaurants,Pizza: 2657
-Restaurants,Nightlife: 2533
-Restaurants,Mexican: 2515
+Fast Food,Restaurants: 2851
+Pizza,Restaurants: 2657
+Nightlife,Restaurants: 2533
+Mexican,Restaurants: 2515
 Hotels & Travel: 2495
-Restaurants,American (Traditional): 2416
-Restaurants,Sandwiches: 2364
+Nightlife,Restaurants,Bars: 2423
+American (Traditional),Restaurants: 2416
+Sandwiches,Restaurants: 2364
 Arts & Entertainment: 2271
 Coffee & Tea,Food: 2199
-Restaurants,Food: 2101
+Food,Restaurants: 2101
 Hair Salons,Beauty & Spas: 2091
-Restaurants,Italian: 1848
-Restaurants,Burgers: 1774
-Auto Repair,Automotive: 1716
+Italian,Restaurants: 1848
+Burgers,Restaurants: 1774
+Automotive,Auto Repair: 1716
 Doctors,Health & Medical: 1694
 Nail Salons,Beauty & Spas: 1667
 Restaurants,Chinese: 1629
-Restaurants,American (New): 1593
+American (New),Restaurants: 1593
 Shopping,Home & Garden: 1586
 Pets: 1497
-Event Planning & Services,Hotels & Travel: 1471
+Hotels & Travel,Event Planning & Services: 1471
 Fitness & Instruction,Active Life: 1442
+Hotels & Travel,Hotels,Event Planning & Services: 1431
 Home Services,Real Estate: 1424
-Grocery,Food: 1424
+Food,Grocery: 1424
 Restaurants,Breakfast & Brunch: 1369
 Dentists,Health & Medical: 1195
 Specialty Food,Food: 1150
-Bakeries,Food: 1115
+Fashion,Shopping,Women's Clothing: 1138
+Food,Bakeries: 1115
 Professional Services: 1025
-Ice Cream & Frozen Yogurt,Food: 1018
+Food,Ice Cream & Frozen Yogurt: 1018
 Restaurants,Cafes: 1002
 Financial Services: 875
-Pets,Pet Services: 870
-Restaurants,Japanese: 848
+Pubs,Nightlife,Bars: 874
+Pet Services,Pets: 870
+Japanese,Restaurants: 848
+General Dentistry,Dentists,Health & Medical: 823
+Sports Bars,Nightlife,Bars: 818
 Restaurants,Sushi Bars: 798
+Fast Food,Burgers,Restaurants: 774

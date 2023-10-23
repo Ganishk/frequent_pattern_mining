@@ -15,31 +15,31 @@ Fashion: 3078
 Fashion,Shopping: 3078
 Event Planning & Services: 2975
 Fast Food: 2851
-Restaurants,Fast Food: 2851
+Fast Food,Restaurants: 2851
 Pizza: 2657
-Restaurants,Pizza: 2657
-Restaurants,Nightlife: 2533
+Pizza,Restaurants: 2657
+Nightlife,Restaurants: 2533
 Mexican: 2515
-Restaurants,Mexican: 2515
+Mexican,Restaurants: 2515
 Hotels & Travel: 2495
 Restaurants,Bars: 2423
-Restaurants,Nightlife,Bars: 2423
+Nightlife,Restaurants,Bars: 2423
 American (Traditional): 2416
-Restaurants,American (Traditional): 2416
+American (Traditional),Restaurants: 2416
 Sandwiches: 2364
-Restaurants,Sandwiches: 2364
+Sandwiches,Restaurants: 2364
 Arts & Entertainment: 2271
 Coffee & Tea: 2199
 Coffee & Tea,Food: 2199
-Restaurants,Food: 2101
+Food,Restaurants: 2101
 Hair Salons: 2091
 Hair Salons,Beauty & Spas: 2091
 Italian: 1848
-Restaurants,Italian: 1848
+Italian,Restaurants: 1848
 Burgers: 1774
-Restaurants,Burgers: 1774
+Burgers,Restaurants: 1774
 Auto Repair: 1716
-Auto Repair,Automotive: 1716
+Automotive,Auto Repair: 1716
 Doctors: 1694
 Doctors,Health & Medical: 1694
 Nail Salons: 1667
@@ -47,21 +47,21 @@ Nail Salons,Beauty & Spas: 1667
 Chinese: 1629
 Restaurants,Chinese: 1629
 American (New): 1593
-Restaurants,American (New): 1593
+American (New),Restaurants: 1593
 Home & Garden: 1586
 Shopping,Home & Garden: 1586
 Pets: 1497
-Event Planning & Services,Hotels & Travel: 1471
+Hotels & Travel,Event Planning & Services: 1471
 Fitness & Instruction: 1442
 Fitness & Instruction,Active Life: 1442
 Hotels: 1431
-Hotels & Travel,Hotels: 1431
-Event Planning & Services,Hotels: 1431
-Event Planning & Services,Hotels,Hotels & Travel: 1431
+Hotels,Hotels & Travel: 1431
+Hotels,Event Planning & Services: 1431
+Hotels & Travel,Hotels,Event Planning & Services: 1431
 Grocery: 1424
 Real Estate: 1424
 Home Services,Real Estate: 1424
-Grocery,Food: 1424
+Food,Grocery: 1424
 Breakfast & Brunch: 1369
 Restaurants,Breakfast & Brunch: 1369
 Dentists: 1195
@@ -73,30 +73,30 @@ Fashion,Women's Clothing: 1138
 Shopping,Women's Clothing: 1138
 Fashion,Shopping,Women's Clothing: 1138
 Bakeries: 1115
-Bakeries,Food: 1115
+Food,Bakeries: 1115
 Professional Services: 1025
 Ice Cream & Frozen Yogurt: 1018
-Ice Cream & Frozen Yogurt,Food: 1018
+Food,Ice Cream & Frozen Yogurt: 1018
 Cafes: 1002
 Restaurants,Cafes: 1002
 Financial Services: 875
 Pubs: 874
 Pubs,Bars: 874
-Nightlife,Pubs: 874
-Nightlife,Bars,Pubs: 874
+Pubs,Nightlife: 874
+Pubs,Nightlife,Bars: 874
 Pet Services: 870
-Pets,Pet Services: 870
+Pet Services,Pets: 870
 Japanese: 848
-Restaurants,Japanese: 848
+Japanese,Restaurants: 848
 General Dentistry: 823
-Dentists,General Dentistry: 823
+General Dentistry,Dentists: 823
 General Dentistry,Health & Medical: 823
-Dentists,General Dentistry,Health & Medical: 823
+General Dentistry,Dentists,Health & Medical: 823
 Sports Bars: 818
-Bars,Sports Bars: 818
-Nightlife,Sports Bars: 818
-Nightlife,Bars,Sports Bars: 818
+Sports Bars,Bars: 818
+Sports Bars,Nightlife: 818
+Sports Bars,Nightlife,Bars: 818
 Sushi Bars: 798
 Restaurants,Sushi Bars: 798
-Burgers,Fast Food: 774
-Restaurants,Burgers,Fast Food: 774
+Fast Food,Burgers: 774
+Fast Food,Burgers,Restaurants: 774

@@ -160,23 +160,32 @@ class Apriori:
                 file.write(f"{','.join(frequent_patterns_to_write[i])}: {self.get_support(frequent_patterns_to_write[i])}\n")
 
     def filter_closed_frequent_itemsets(self):
+        """
+            This method is used to filter the closed frequent itemsets from the frequent itemsets.
+            - All maximal frequent patterns are closed
+            - Absolute support of a immediate superset of closed frequent pattern is should less than that of the current pattern
+
+            Time Complexity: O(k*m*m), where k is the maximum length of a frequent pattern and m is the total number of frequent itemsets of all length
+
+            Approach:
+                Traverse through the k-length frequent itemsets and check whether any of the k+1 length frequent pattern have same support and is a super set of
+                the searching pattern.
+        """
         self.__closed_patterns = []
         for klength_index in range(len(self.length_of_frequent_items)-2):
             for pattern_number in range(self.length_of_frequent_items[klength_index],self.length_of_frequent_items[klength_index+1]):
                 support_of_current_pattern = self.get_support(self.frequent_items[pattern_number])
-                valid_closed_frequent_itemset = False
+                valid_closed_frequent_itemset = True
 
                 for higher_index in range(self.length_of_frequent_items[klength_index+1],self.length_of_frequent_items[klength_index+2]):
-                    if self.frequent_items[higher_index].issuperset(self.frequent_items[pattern_number]):
-                        if self.get_support(self.frequent_items[higher_index]) != support_of_current_pattern:
-                            valid_closed_frequent_itemset = True
-                        else:
+                    if self.frequent_items[higher_index].issuperset(self.frequent_items[pattern_number]) and self.get_support(self.frequent_items[higher_index]) == support_of_current_pattern:
                             valid_closed_frequent_itemset = False
                             break
-                    else: valid_closed_frequent_itemset = True
                     
                 
                 if valid_closed_frequent_itemset: self.__closed_patterns.append(self.frequent_items[pattern_number])
+        
+        return self.__closed_patterns
 
 def main(dataset=None,relminsup=1):
     if dataset==None: return
